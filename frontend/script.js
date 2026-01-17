@@ -1,25 +1,21 @@
-// ===== Backend API URL =====
 const API_URL = "https://hotel-booking-233l.onrender.com";
 
 let selectedBooking = null;
 
-// ===== Load hotel room status from backend =====
 async function loadStatus() {
   try {
     const res = await fetch(`${API_URL}/rooms/status`);
     const data = await res.json();
     renderGrid(data);
   } catch (err) {
-    console.error("Status fetch failed:", err);
-    alert("Unable to load hotel status. Backend might be down.");
+    console.error(err);
+    alert("Backend unreachable!");
   }
 }
 
-// ===== Render room grid =====
 function renderGrid(data) {
   const grid = document.getElementById("hotelGrid");
   grid.innerHTML = "";
-  selectedBooking = null;
 
   for (let floor = 10; floor >= 1; floor--) {
     const row = document.createElement("div");
@@ -47,42 +43,30 @@ function renderGrid(data) {
   }
 }
 
-// ===== Book specific room =====
 async function bookRoom() {
   const room = parseInt(document.getElementById("roomInput").value);
-
-  if (!room) {
-    alert("Enter room number.");
-    return;
-  }
+  if (!room) return alert("Enter room number");
 
   const res = await fetch(`${API_URL}/book?room=${room}`, { method: "POST" });
-
   if (!res.ok) {
     const msg = await res.json();
-    alert(msg.detail || "Booking failed");
-    return;
+    alert(msg.detail);
   }
-
   await loadStatus();
 }
 
-// ===== Random booking =====
 async function randomFill() {
   await fetch(`${API_URL}/random`, { method: "POST" });
   await loadStatus();
 }
 
-// ===== Reset hotel =====
 async function resetHotel() {
   await fetch(`${API_URL}/reset`, { method: "POST" });
   await loadStatus();
 }
 
-// ===== Vacate Modal Logic =====
 function openVacateModal(bid, room) {
   selectedBooking = bid;
-
   document.getElementById("modalTitle").innerText = `Vacate Booking #${bid}?`;
   document.getElementById("modalRoom").innerText = `Room: ${room}`;
   document.getElementById("vacateModal").style.display = "flex";
@@ -100,6 +84,4 @@ function closeModal() {
   document.getElementById("vacateModal").style.display = "none";
 }
 
-// ===== Initial load =====
 loadStatus();
-
