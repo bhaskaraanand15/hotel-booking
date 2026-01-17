@@ -1,5 +1,6 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+
 from booking_logic import (
     load_state, save_state, room_exists, is_occupied,
     commit_booking, vacate_booking, reset_hotel,
@@ -8,15 +9,16 @@ from booking_logic import (
 
 app = FastAPI()
 
+# CORS for frontend (GitHub Pages)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
+    allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
 load_state()
-
 
 @app.get("/rooms/status")
 def status():
