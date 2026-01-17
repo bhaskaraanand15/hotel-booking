@@ -1,9 +1,9 @@
-const API = "http://127.0.0.1:8000";
+const API_URL = "https://hotel-booking-233l.onrender.com";
 
 let selectedBooking = null;
 
 async function loadStatus() {
-  const res = await fetch(`${API}/rooms/status`);
+  const res = await fetch(`${API_URL}/rooms/status`);
   const data = await res.json();
   renderGrid(data);
 }
@@ -47,7 +47,7 @@ async function bookRoom() {
     return;
   }
 
-  const res = await fetch(`${API}/book?room=${room}`, { method: "POST" });
+  const res = await fetch(`${API_URL}/book?room=${room}`, { method: "POST" });
 
   if (!res.ok) {
     const msg = await res.json();
@@ -59,12 +59,12 @@ async function bookRoom() {
 }
 
 async function randomFill() {
-  await fetch(`${API}/random`, { method: "POST" });
+  await fetch(`${API_URL}/random`, { method: "POST" });
   await loadStatus();
 }
 
 async function resetHotel() {
-  await fetch(`${API}/reset`, { method: "POST" });
+  await fetch(`${API_URL}/reset`, { method: "POST" });
   await loadStatus();
 }
 
@@ -77,7 +77,7 @@ function openVacateModal(bid, room) {
   document.getElementById("vacateModal").style.display = "flex";
 
   document.getElementById("confirmVacateBtn").onclick = async () => {
-    await fetch(`${API}/vacate?bid=${bid}`, { method: "POST" });
+    await fetch(`${API_URL}/vacate?bid=${bid}`, { method: "POST" });
     closeModal();
     await loadStatus();
   };
