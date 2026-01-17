@@ -102,3 +102,4 @@ function closeModal() {
 
 // ===== Initial load =====
 loadStatus();
+
