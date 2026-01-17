@@ -28,9 +28,9 @@ function renderGrid(data) {
       div.innerText = r.room;
 
       if (r.occupied) {
-        div.classList.add("occupied");
-        div.onclick = () => openVacateModal(r.booking_id, r.room);
-      }
+    div.classList.add("occupied");
+}
+
 
       row.appendChild(div);
     }
@@ -90,3 +90,4 @@ function closeModal() {
 }
 
 loadStatus();
+
